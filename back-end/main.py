@@ -3,9 +3,13 @@ from db import alux_collection
 from flask_cors import CORS
 
 
+app = Flask(__name__, static_folder='build', static_url_path='/')
 
-app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 @app.route('/api/search_query/<skips>', methods=['POST'])
 def search_query(skips):
@@ -24,10 +28,5 @@ def search_query(skips):
         return jsonify(response_data)
     else:
         return "Item not found", 404
-
-
-if __name__ == '__main__':
-    app.run(host= '0.0.0.0',debug=True)
-
 
 
